@@ -1,13 +1,15 @@
 #include "Arduino.h"
 #include "mqtt.h"
 #include <PubSubClient.h>
+#include "display.h"
+#include "led.h"
 
 class MQTTManager {
 private:
   unsigned long lastConnectionAttempt = 0;
-  const unsigned long connectionInterval = 5000; // Zeitintervall zwischen Verbindungsversuchen in Millisekunden
+  const unsigned long connectionInterval = 5000; 
   unsigned long lastMeasurementTime = 0;
-  const unsigned long measurementInterval = 5000; // Zeitintervall zwischen Messungen in Millisekunden
+  const unsigned long measurementInterval = 5000; 
 
 public:
   MQTTManager() {}
@@ -25,7 +27,7 @@ public:
   }
 
   static void callback(char* topic, byte* payload, unsigned int length) {
-    // Funktion wird aufgerufen, wenn eine Nachricht empfangen wird
+    
     Serial.print("Nachricht auf Topic [");
     Serial.print(topic);
     Serial.print("] Daten: ");
@@ -41,14 +43,31 @@ public:
       lastConnectionAttempt = currentMillis;
 
       Serial.print("Verbindung zum MQTT-Broker ...");
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Verbindung zum MQTT-Broker ...");
+
       if (client.connect("ESP32Client", mqtt_user, mqtt_password)) {
         Serial.println(" verbunden");
+
+        lcd.setCursor(0, 1);
+        lcd.print("verbunden");
+
+        digitalWrite(ledGreen, HIGH);
+        digitalWrite(ledRed, LOW);
+
         client.subscribe(mqtt_temperature_topic);
         client.subscribe(mqtt_humidity_topic);
       } else {
         Serial.print(" fehlgeschlagen, rc=");
         Serial.print(client.state());
         Serial.println(" erneuter Versuch in 5 Sekunden");
+
+        lcd.setCursor(0, 1);
+        lcd.print("fehlgeschlagen");
+
+        digitalWrite(ledRed, HIGH);
+        digitalWrite(ledGreen, LOW);
       }
     }
   }
@@ -63,7 +82,7 @@ public:
     if (currentMillis - lastMeasurementTime >= measurementInterval) {
       lastMeasurementTime = currentMillis;
 
-      // Messung der Temperatur und Luftfeuchtigkeit
+      
       float humidity = dht.readHumidity();
       float temperature = dht.readTemperature();
 
@@ -79,12 +98,12 @@ public:
       Serial.print(temperature);
       Serial.println(" *C");
 
-      // Senden der Temperaturdaten an den MQTT-Broker
+    
       char tempString[8];
       dtostrf(temperature, 6, 2, tempString);
       client.publish(mqtt_temperature_topic, tempString);
 
-      // Senden der Luftfeuchtigkeitsdaten an den MQTT-Broker
+      
       char humidityString[8];
       dtostrf(humidity, 6, 2, humidityString);
       client.publish(mqtt_humidity_topic, humidityString);
