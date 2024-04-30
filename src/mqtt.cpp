@@ -12,6 +12,10 @@ private:
   const unsigned long measurementInterval = 5000; 
 
 public:
+
+  float temperature;
+  float humidity;
+  
   MQTTManager() {}
 
   void setup() {
@@ -37,15 +41,9 @@ public:
       lastConnectionAttempt = currentMillis;
 
       Serial.print("Verbindung zum MQTT-Broker ...");
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("Verbindung zum MQTT-Broker ...");
 
       if (client.connect("ESP32Client", mqtt_user, mqtt_password)) {
         Serial.println(" verbunden");
-
-        lcd.setCursor(0, 1);
-        lcd.print("verbunden");
 
         digitalWrite(ledGreen, HIGH);
         digitalWrite(ledRed, LOW);
@@ -57,8 +55,6 @@ public:
         Serial.print(client.state());
         Serial.println(" erneuter Versuch in 5 Sekunden");
 
-        lcd.setCursor(0, 1);
-        lcd.print("fehlgeschlagen");
 
         digitalWrite(ledRed, HIGH);
         digitalWrite(ledGreen, LOW);
@@ -77,8 +73,8 @@ public:
       lastMeasurementTime = currentMillis;
 
       
-      float humidity = dht.readHumidity();
-      float temperature = dht.readTemperature();
+      humidity = dht.readHumidity();
+      temperature = dht.readTemperature();
 
       if (isnan(humidity) || isnan(temperature)) {
         Serial.println("Fehler beim Lesen des DHT22");
