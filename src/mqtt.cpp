@@ -18,13 +18,7 @@ public:
     client.setServer(mqtt_server, 1883);
     client.setCallback(callback);
     dht.begin();
-
-    Serial.println();
-    Serial.print("Verbindung mit ");
-    Serial.println(ssid);
-
-    WiFi.begin(ssid, password);
-  }
+    }
 
   static void callback(char* topic, byte* payload, unsigned int length) {
     
