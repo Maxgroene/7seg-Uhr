@@ -13,10 +13,10 @@ const int numServos = 4;
 Servo servo[numServos];  
 const int servoPins[numServos] = {32, 33, 25, 26};
 int servoPos[4][10] = {
-  {166, 150, 129, 112, 94, 77, 59, 42, 24, 7},
-  {164, 147, 129, 112, 94, 77, 64, 48, 32, 20},
-  {160, 142, 121, 104, 90, 75, 62, 42, 24, 7},
-  {164, 147, 129, 112, 94, 77, 63, 44, 26, 9},
+  {178, 140, 125, 100, 85, 60, 45, 24, 8, 0},
+  {178, 140, 125, 100, 85, 60, 45, 24, 8, 0},
+  {178, 140, 125, 100, 85, 60, 45, 24, 8, 0},
+  {178, 140, 125, 100, 85, 60, 45, 24, 8, 0},
 };
 
 #define DHTPIN 4
@@ -71,8 +71,9 @@ void loop() {
     WiFi.reconnect();
   }
   mqttManager.mqttLoop();
-  servoManager.SetNumber(test);
-  test++;
   
-  delay(100);
+  servoManager.SetNumber(test);
+  test += 1;
+  
+  delay(300);
 }
