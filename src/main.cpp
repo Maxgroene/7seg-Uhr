@@ -90,7 +90,7 @@ void loop()
 {
 
   potValue = analogRead(potPin);
-  int tempPot = map(potValue, 0, 4095, 0, 4);
+  int tempPot = map(potValue, 0, 8190, 0, 5); //  or 4095
 
   if (WiFi.status() != WL_CONNECTED)
   {
@@ -129,16 +129,22 @@ void loop()
     break;
   case 3:
     lcd.setCursor(0, 0);
-    lcd.print("Sending MQTT");
-    lcd.setCursor(0, 1);
-    lcd.print("Only");
-    break;
-  case 4:
-    lcd.setCursor(0, 0);
-    lcd.print("Uhrzeit");
+    lcd.print("Uhrzeit MQTT");
     lcd.setCursor(0, 1);
     lcd.print(mqttManager.time);
     servoManager.SetNumber(mqttManager.time);
+    break;
+  case 4:
+    lcd.setCursor(0, 0);
+    lcd.print("Uhrzeit DCF77");
+    lcd.setCursor(0, 1);
+    lcd.print(String(hour())+":" + String(minute()));
+    break;
+  case 5:
+    lcd.setCursor(0, 0);
+    lcd.print("Sending MQTT");
+    lcd.setCursor(0, 1);
+    lcd.print("Only");
     break;
   default:
     break;
