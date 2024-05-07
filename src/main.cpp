@@ -39,9 +39,11 @@ const char *mqtt_user = "max";
 const char *mqtt_password = "Hallo.123";
 const char *mqtt_temperature_topic = "esp01/temperature";
 const char *mqtt_humidity_topic = "esp01/humidity";
+const char *mqtt_time_topic = "esp01/uhr";
 
 ServoManager servoManager;
 MQTTManager mqttManager;
+int MQTTManager::time;
 WiFiClient espClient;
 PubSubClient client(espClient);
 DHT dht(DHTPIN, DHTTYPE);
@@ -51,6 +53,7 @@ int test = 0;
 
 void setup()
 {
+  Serial.begin(115200);
   pinMode(ledGreen, OUTPUT);
   pinMode(ledRed, OUTPUT);
 
@@ -74,7 +77,7 @@ void loop()
 {
 
   potValue = analogRead(potPin);
-  int tempPot = map(potValue, 0, 4095, 0, 3);
+  int tempPot = map(potValue, 0, 4095, 0, 4);
 
   if (WiFi.status() != WL_CONNECTED)
   {
@@ -116,6 +119,13 @@ void loop()
     lcd.print("Sending MQTT");
     lcd.setCursor(0, 1);
     lcd.print("Only");
+    break;
+  case 4:
+    lcd.setCursor(0, 0);
+    lcd.print("Uhrzeit");
+    lcd.setCursor(0, 1);
+    lcd.print(mqttManager.time);
+    servoManager.SetNumber(mqttManager.time);
     break;
   default:
     break;
