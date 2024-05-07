@@ -13,10 +13,10 @@ const int numServos = 4;
 Servo servo[numServos];
 const int servoPins[numServos] = {32, 33, 25, 26};
 int servoPos[4][10] = {
-    {178, 140, 125, 100, 85, 60, 45, 24, 8, 0},
-    {178, 140, 125, 100, 85, 60, 45, 24, 8, 0},
-    {178, 140, 125, 100, 85, 60, 45, 24, 8, 0},
-    {178, 140, 125, 100, 85, 60, 45, 24, 8, 0},
+    {178, 150, 130, 110, 90, 70, 50, 35, 20, 0},
+    {178, 160, 130, 110, 90, 70, 55, 30, 17, 0},
+    {178, 150, 130, 110, 90, 70, 55, 35, 17, 0},
+    {178, 150, 130, 110, 90, 70, 50, 35, 20, 0},
 };
 
 #define DHTPIN 4
@@ -93,7 +93,7 @@ void loop()
     lcd.setCursor(0, 1);
     lcd.print(test);
     servoManager.SetNumber(test);
-    test += 1;
+    test += 10;
     break;
   case 1:
     lcd.setCursor(0, 0);

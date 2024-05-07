@@ -33,11 +33,11 @@ public:
 for (int i = 0; i < numServos; i++) 
   {
      
-    servo[i].write(servoPos[i][digits[i - backspinPositions]]);
-    delay(100);
+    //servo[i].write(servoPos[i][digits[i - backspinPositions]]);
+    
     //Servos werden von links nach rechts links angesteuert
     servo[i].write(servoPos[i][digits[i]]);
-    delay(200); // Delay between servo movements
+    delay(100); // Delay between servo movements
     
     Serial.print("Servo Nr.");
     Serial.print(i+1);
