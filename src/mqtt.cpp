@@ -4,6 +4,8 @@
 #include "display.h"
 #include "led.h"
 
+
+
 class MQTTManager {
 private:
   unsigned long lastConnectionAttempt = 0;
@@ -15,6 +17,7 @@ public:
 
   float temperature;
   float humidity;
+  static int time;
   
   MQTTManager() {}
 
@@ -26,15 +29,21 @@ public:
 
   static void callback(char* topic, byte* payload, unsigned int length) {
     
-    Serial.print("Nachricht auf Topic [");
-    Serial.print(topic);
-    Serial.print("] Daten: ");
-    for (int i = 0; i < length; i++) {
-      Serial.print((char)payload[i]);
-    }
-    Serial.println();
+Serial.print("Message arrived on topic: ");
+  Serial.print(topic);
+  Serial.print(". Message: ");
+  String messageTemp;
+  
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)payload[i]);
+    messageTemp += (char)payload[i];
   }
-
+  Serial.println();
+  
+  if (String(topic) == "esp01/uhr") {
+    time = messageTemp.toInt();  
+  }
+  }
   void reconnect() {
     unsigned long currentMillis = millis();
     if (currentMillis - lastConnectionAttempt >= connectionInterval) {
@@ -50,6 +59,7 @@ public:
 
         client.subscribe(mqtt_temperature_topic);
         client.subscribe(mqtt_humidity_topic);
+        client.subscribe(mqtt_time_topic);
       } else {
         Serial.print(" fehlgeschlagen, rc=");
         Serial.print(client.state());
@@ -97,6 +107,9 @@ public:
       char humidityString[8];
       dtostrf(humidity, 6, 2, humidityString);
       client.publish(mqtt_humidity_topic, humidityString);
+
+
     }
   }
+  
 };

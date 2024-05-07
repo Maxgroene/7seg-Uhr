@@ -12,6 +12,7 @@ extern const char* mqtt_user;
 extern const char* mqtt_password;
 extern const char* mqtt_temperature_topic;
 extern const char* mqtt_humidity_topic;
+extern const char* mqtt_time_topic;
 
 extern WiFiClient espClient;
 extern PubSubClient client;
