@@ -55,11 +55,10 @@ PubSubClient client(espClient);
 DHT dht(DHTPIN, DHTTYPE);
 LiquidCrystal_I2C lcd(lcdAddress, lcdColumns, lcdRows);
 DCF77 DCF = DCF77(DCF_PIN, DCF_INTERRUPT);
+
 bool g_bDCFTimeFound = false;
 
 int test = 0;
-
-bool g_bDCFTimeFound = false;
 
 void setup()
 {
@@ -144,6 +143,10 @@ void loop()
   default:
     break;
   }
+
+  time_t DCFtime = DCF.getTime();
+  
+  Serial.print("Aktuelle Uhrzeit: " + String(hour())+":" + String(minute()));
 
   delay(300);
 }
