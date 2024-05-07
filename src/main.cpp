@@ -8,6 +8,8 @@
 #include "servo.cpp"
 #include "display.h"
 #include "led.h"
+#include "DCF77.h"
+#include "TimeLib.h"
 
 const int numServos = 4;
 Servo servo[numServos];
@@ -21,6 +23,10 @@ int servoPos[4][10] = {
 
 #define DHTPIN 4
 #define DHTTYPE DHT22
+
+#define DCF_PIN 2           // Connection pin to DCF 77 device
+#define DCF_INTERRUPT 0    // Interrupt number associated with pin
+#define PIN_LED 13
 
 const int ledGreen = 15;
 const int ledRed = 2;
@@ -48,8 +54,12 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 DHT dht(DHTPIN, DHTTYPE);
 LiquidCrystal_I2C lcd(lcdAddress, lcdColumns, lcdRows);
+DCF77 DCF = DCF77(DCF_PIN, DCF_INTERRUPT);
+bool g_bDCFTimeFound = false;
 
 int test = 0;
+
+bool g_bDCFTimeFound = false;
 
 void setup()
 {
@@ -59,6 +69,10 @@ void setup()
 
   lcd.init();
   lcd.backlight();
+
+  DCF.Start();
+  Serial.println("Warten auf DCF77-Zeit... ");
+  Serial.println("Dies dauert mindestens 2 Minuten, in der Regel eher länger.");  
 
   WiFi.begin(ssid, password);
   Serial.print("Verbindung mit ");
