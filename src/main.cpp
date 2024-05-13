@@ -40,9 +40,9 @@ const int lcdAddress = 0x27;
 
 const char *ssid = "BKR-HotSpot";
 const char *password = "";
-const char *mqtt_server = "mqtt.mgroe.de";
-const char *mqtt_user = "max";
-const char *mqtt_password = "Hallo.123";
+const char *mqtt_server = "your-mqtt-server";
+const char *mqtt_user = "user";
+const char *mqtt_password = "psw";
 const char *mqtt_temperature_topic = "esp01/temperature";
 const char *mqtt_humidity_topic = "esp01/humidity";
 const char *mqtt_time_topic = "esp01/uhr";
