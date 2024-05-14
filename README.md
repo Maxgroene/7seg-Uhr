@@ -17,7 +17,7 @@ This project aims to create a unique mechanical 7-segment display that can be co
 
 This project drew inspiration from various designs found on Thingiverse. Specific designs and contributors include:
 
-- [7-Segment Display Model](https://www.thingiverse.com/thing:5066794) by [Username](https://www.thingiverse.com/shiura)
+- [7-Segment Display Model](https://www.thingiverse.com/thing:5066794) by [Shiura](https://www.thingiverse.com/shiura)
 
 ## Getting Started
 
